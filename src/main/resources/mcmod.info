@@ -1,0 +1,20 @@
+[
+{
+  "modid" : "trailmix",
+  "name" : "TrailMix",
+  "version" : "${version}",
+  "url" : "http://ichun.me/mods/trail-mix/",
+  "credits" : "",
+  "authorList": [
+    "iChun"
+  ],
+  "description": "This mod adds a single food item, called trail mix. This food item does plenty of crazy things when eaten.",
+  "updateUrl" : "",
+  "parent" : "",
+  "screenshots": [
+  ],
+  "dependencies": [
+    "Forge", "iChunUtil"
+  ]
+}
+]

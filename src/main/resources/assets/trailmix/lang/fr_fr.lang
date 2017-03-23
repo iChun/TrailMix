@@ -1,0 +1,59 @@
+trailmix.config.cat.potionEffect.name=Effet de potion
+trailmix.config.cat.clientOnly.name=Côté client seulement
+
+trailmix.config.cat.potionEffect.comment=Paramètres liés à l'effet de potion Mélange spécial
+trailmix.config.cat.clientOnly.comment=Ces paramètres affectent seulement le client utilisant le mod.
+
+trailmix.config.prop.potID.name=ID de potion pour le Mélange spécial
+trailmix.config.prop.potFireball.name=Compétence boule de feu
+trailmix.config.prop.potFireballUse.name=Utilisation de l'effet pour une boule de feu
+trailmix.config.prop.potFireballMinReq.name=Durée requise pour boules de feu
+trailmix.config.prop.potFireballCooldown.name=Temps de recharge d'une boule de feu
+trailmix.config.prop.potDuration.name=Durée du mélange spécial
+trailmix.config.prop.potPoisoning.name=Quantité de mélange spécial pour une overdose
+trailmix.config.prop.potSpeed.name=Multiplicateur de vitesse de marche
+trailmix.config.prop.fallDampening.name=Amortissement de chute
+trailmix.config.prop.pigExplosion.name=Explosion du cochon affecte les blocs
+trailmix.config.prop.horseClearZone.name=Suppression des blocs par le cheval
+trailmix.config.prop.horseFireTrail.name=Traînée de feu du cheval
+trailmix.config.prop.explosionBubble.name=Frappe comique
+trailmix.config.prop.showFlightTimer.name=Afficher le temps de vol
+trailmix.config.prop.replaceRender.name=Remplacement du rendu du cochon
+trailmix.config.prop.fireballKey.name=Lancer une boule de feu
+trailmix.config.prop.pitchUpKey.name=Vol haut
+trailmix.config.prop.pitchDownKey.name=Vol bas
+trailmix.config.prop.strafeLeftKey.name=Tourner à gauche
+trailmix.config.prop.strafeRightKey.name=Tourner à droite
+trailmix.config.prop.speedUpKey.name=Accélérer
+trailmix.config.prop.speedDownKey.name=Ralentir
+trailmix.config.prop.tightTurnKey.name=Virage de précision
+
+trailmix.config.prop.potID.comment=L'ID pour l'effet de potion.\n0 = Prend automatiquement le premier ID libre
+trailmix.config.prop.potFireball.comment=Autoriser la possibilité de lancer des boules de feu ?
+trailmix.config.prop.potFireballUse.comment=Durée de l'effet retirée pour lancer une boule de feu (en ticks)
+trailmix.config.prop.potFireballMinReq.comment=Durée minimale de l'effet Mélange spécial pour lancer des boules de feu (en ticks)
+trailmix.config.prop.potFireballCooldown.comment=Temps requis entre chaque boule de feu (en ticks)
+trailmix.config.prop.potDuration.comment=Durée de chaque mélange spécila consommé (en ticks)
+trailmix.config.prop.potPoisoning.comment=Quantité nécessaire pour faire une overdose (en ticks)\nMettez à 0 pour désactiver
+trailmix.config.prop.potSpeed.comment=Vitesse de marche sous l'effet de potion
+trailmix.config.prop.fallDampening.comment=Amortir les dommages de chute ?\nDommage de chute / (Cette valeur + 1)
+trailmix.config.prop.pigExplosion.comment=Est-ce que l'explosion d'un cochon détruit les blocs ?\n0 = Non\n1 = Oui\n2 = Règles du monde
+trailmix.config.prop.horseClearZone.comment=Est-ce que les chevaux suppriment les blocs devant eux sous l'effet du mélange spécial ?\n0 = Non\n1 = Oui\n2 = Règles du monde
+trailmix.config.prop.horseFireTrail.comment=Est-ce que les chevaux laissent une traînée de feu derrière eux sous l'effet du mélange spécial ?
+trailmix.config.prop.explosionBubble.comment=Activer les effets d'explosion en bulle (Ka-boom !) lorsqu'un monstre est frappé ?
+trailmix.config.prop.showFlightTimer.comment=Afficher le temps restant en vol ?
+trailmix.config.prop.replaceRender.comment=Remplacer le rendu des cochons par le rendu modifié ?\nSi vous avez des problèmes de cochons invisibles et autres, désactivez cette option.
+trailmix.config.prop.fireballKey.comment=Touche pour lancer une boule de feu
+trailmix.config.prop.pitchUpKey.comment=Touche pour voler vers le haut sur un cochon dopé
+trailmix.config.prop.pitchDownKey.comment=Touche pour voler vers le bas sur un cochon dopé
+trailmix.config.prop.strafeLeftKey.comment=Touche pour tourner à gauche sur un cochon dopé
+trailmix.config.prop.strafeRightKey.comment=Touche pour tourner à droite sur un cochon dopé
+trailmix.config.prop.speedUpKey.comment=Touche pour accélérer sur un cochon dopé
+trailmix.config.prop.speedDownKey.comment=Touche pour ralentir sur un cochon dopé
+trailmix.config.prop.tightTurnKey.comment=Touche pour faire des virages plus précis sur un cochon dopé
+
+potion.trailmix=Mélange spécial !
+
+item.trailmix.trailmix.name=Mélange spécial
+item.trailmix.tmpp_launcher.name=Lance-cochon dopé
+item.trailmix.nyan_pig_launcher.name=Lance-Nyan cochon

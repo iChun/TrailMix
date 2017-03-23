@@ -1,0 +1,59 @@
+trailmix.config.cat.potionEffect.name=Efecto de poción
+trailmix.config.cat.clientOnly.name=Cliente
+
+trailmix.config.cat.potionEffect.comment=Opciones relacionadas con el efecto de poción del Trail Mix.
+trailmix.config.cat.clientOnly.comment=Opciones que solo afecta al cliente.
+
+trailmix.config.prop.potID.name=Potion ID para el Trail Mix
+trailmix.config.prop.potFireball.name=Bola de Fuego
+trailmix.config.prop.potFireballUse.name=Uso de poción de Bola de Fuego
+trailmix.config.prop.potFireballMinReq.name=Tiempo mínimo para la Bola de Fuego
+trailmix.config.prop.potFireballCooldown.name=Recarga de la Bola de Fuego
+trailmix.config.prop.potDuration.name=Duración del Trail Mix
+trailmix.config.prop.potPoisoning.name=Cantidad de sobredosis del Trail Mix
+trailmix.config.prop.potSpeed.name=Multiplicador de la velocidad al andar
+trailmix.config.prop.fallDampening.name=Daño por caida
+trailmix.config.prop.pigExplosion.name=Explosión del cerdo afectando bloques
+trailmix.config.prop.horseClearZone.name=Caballo borrando bloques
+trailmix.config.prop.horseFireTrail.name=Estela de fuego del caballo
+trailmix.config.prop.explosionBubble.name=Efectos de burbujas en la explosión
+trailmix.config.prop.showFlightTimer.name=Mostrar tiempo de vuelo
+trailmix.config.prop.replaceRender.name=¿Reemplazar textura del cerdo?
+trailmix.config.prop.fireballKey.name=Tecla de la Bola de Fuego
+trailmix.config.prop.pitchUpKey.name=Tecla hacia arriba
+trailmix.config.prop.pitchDownKey.name=Tecla hacia abajo
+trailmix.config.prop.strafeLeftKey.name=Tecla hacia la izquierda
+trailmix.config.prop.strafeRightKey.name=Tecla hacia la derecha
+trailmix.config.prop.speedUpKey.name=Tecla de subir velocidad
+trailmix.config.prop.speedDownKey.name=Tecla de reducir velocidad
+trailmix.config.prop.tightTurnKey.name=Tecla de giros cerrados
+
+trailmix.config.prop.potID.comment=ID del efecto de poción del Trail Mix.\n0 = Primera disponible
+trailmix.config.prop.potFireball.comment=¿Permitir lanzar bolas de fuego?
+trailmix.config.prop.potFireballUse.comment=Tiempo que dura la poción de Bola de Fuego (en ticks)
+trailmix.config.prop.potFireballMinReq.comment= Tiempo mínimo que se tarda en lanzar la Bola de Fuego (en ticks)
+trailmix.config.prop.potFireballCooldown.comment=Tiempo de recarga entre cada Bola (en ticks)
+trailmix.config.prop.potDuration.comment=Duración de cada Trail mix (en ticks)
+trailmix.config.prop.potPoisoning.comment=Cuanto se puede comer antes de una sobredosis (en ticks)\n 0 = desactivado
+trailmix.config.prop.potSpeed.comment=Velocidad al andar cuando se toma el Trail Mix
+trailmix.config.prop.fallDampening.comment=¿Reducir el daño por caida?\nDaño por caida / (Este valor + 1)
+trailmix.config.prop.pigExplosion.comment=¿Afectan las explosiones de los cerdos a los bloques?\n0 = No\n1 = Sí\n2 = Según las reglas del mundo
+trailmix.config.prop.horseClearZone.comment=¿Rompen los caballos bloques bajo los efectos del Trail Mix?\n0 = No\n1 = Sí\n2 = Según las reglas del mundo
+trailmix.config.prop.horseFireTrail.comment=¿Dejan los caballos una estela de fuego bajo los efectos del Trail Mix?
+trailmix.config.prop.explosionBubble.comment=¿Activar los efectos de burbujas cuando se pega a un mob?
+trailmix.config.prop.showFlightTimer.comment=¿Mostrar el tiempo de vuelo restante?
+trailmix.config.prop.replaceRender.comment=¿Reemplazar la textura del cerdo por la del mod?\nSi tienes problemas como cerdos invisibles desactiva esto.
+trailmix.config.prop.fireballKey.comment=Tecla para lanzar una Bola de Fuego
+trailmix.config.prop.pitchUpKey.comment=Tecla para girar hacia arriba cuando vas en un cerdo con Trail Mix
+trailmix.config.prop.pitchDownKey.comment=Tecla para girar hacia abajo cuando vas en un cerdo con Trail Mix
+trailmix.config.prop.strafeLeftKey.comment=Tecla para girar hacia la izquierda cuando vas en un cerdo con Trail Mix
+trailmix.config.prop.strafeRightKey.comment=Tecla para girar hacia la derecha cuando vas en un cerdo con Trail Mix
+trailmix.config.prop.speedUpKey.comment=Tecla para aumentar la velocidad cuando vas en un cerdo con Trail Mix
+trailmix.config.prop.speedDownKey.comment=Tecla para reducir la velocidad cuando vas en un cerdo con Trail Mix
+trailmix.config.prop.tightTurnKey.comment=Tecla para girar bruscamente cuando vas en un cerdo con Trail Mix
+
+potion.trailmix=¡Trail Mix!
+
+item.trailmix.trailmix.name=Trail Mix
+item.trailmix.tmpp_launcher.name=Lanzador de TMPP
+item.trailmix.nyan_pig_launcher.name= Lanzador de Cerdos Nyan
