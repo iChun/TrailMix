@@ -28,7 +28,6 @@ public class ProxyClient extends ProxyCommon
         ModelLoader.setCustomModelResourceLocation(TrailMix.itemLauncherTMPP, 0, new ModelResourceLocation("trailmix:trailmix.tmpp_launcher", "inventory"));
         ModelLoader.setCustomModelResourceLocation(TrailMix.itemLauncherNyanPig, 0, new ModelResourceLocation("trailmix:trailmix.nyan_pig_launcher", "inventory"));
 
-        ItemHandler.registerDualHandedItem(ItemLauncher.class);
         ItemRenderingHelper.registerSwingProofItem(new ItemRenderingHelper.SwingProofHandler(ItemLauncher.class, null));
     }
 }
