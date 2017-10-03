@@ -23,6 +23,7 @@ public class ItemTrailMix extends ItemFood
     public ItemTrailMix(int par2, float par3, boolean par4)
     {
         super(par2, par3, par4);
+        setAlwaysEdible();
     }
 
     @Override
@@ -66,12 +67,12 @@ public class ItemTrailMix extends ItemFood
             {
                 living.addPotionEffect(new PotionEffect(MobEffects.POISON, duration + TrailMix.config.potDuration * 3, 0));
             }
-            if(!living.worldObj.isRemote)
+            if(!living.world.isRemote)
             {
                 FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendToAllNearExcept(null, living.posX, living.posY, living.posZ, 265D, living.dimension, new SPacketEntityEffect(living.getEntityId(), trailEffect));
             }
             EntityHelper.playSoundAtEntity(living, SoundEvents.ENTITY_PLAYER_BURP, living.getSoundCategory(), 0.3F, 1.0F + (living.getRNG().nextFloat() - living.getRNG().nextFloat()) * 0.2F);
-            is.stackSize--;
+            is.shrink(1);
             return true;
         }
         return false;

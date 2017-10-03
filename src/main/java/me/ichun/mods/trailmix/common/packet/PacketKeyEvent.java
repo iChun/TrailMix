@@ -51,7 +51,7 @@ public class PacketKeyEvent extends AbstractPacket
     }
 
     @Override
-    public AbstractPacket execute(Side side, EntityPlayer player)
+    public void execute(Side side, EntityPlayer player)
     {
         switch(id)
         {
@@ -67,7 +67,7 @@ public class PacketKeyEvent extends AbstractPacket
                         double motionZ = (double)(MathHelper.cos(player.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(player.rotationPitch / 180.0F * (float)Math.PI));
                         double motionY = (double)(-MathHelper.sin(player.rotationPitch / 180.0F * (float)Math.PI));
 
-                        float mag = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ + motionY * motionY);
+                        float mag = MathHelper.sqrt(motionX * motionX + motionZ * motionZ + motionY * motionY);
 
                         motionX /= mag;
                         motionY /= mag;
@@ -77,17 +77,17 @@ public class PacketKeyEvent extends AbstractPacket
                         motionY *= 4F;
                         motionZ *= 4F;
 
-                        float var10 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+                        float var10 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
 
                         float yaw = (float)(Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
                         float pitch = (float)(Math.atan2(motionY, (double)var10) * 180.0D / Math.PI);
 
-                        EntityLargeFireball var17 = new EntityLargeFireball(player.worldObj, player, motionX, motionY, motionZ);
+                        EntityLargeFireball var17 = new EntityLargeFireball(player.world, player, motionX, motionY, motionZ);
                         double var18 = 1.0D;
                         Vec3d var20 = player.getLook(1.0F);
-                        var17.posX = player.posX + var20.xCoord * var18;
+                        var17.posX = player.posX + var20.x * var18;
                         var17.posY = player.posY + (double)(player.getEyeHeight() / 2.0F) + 0.5D;
-                        var17.posZ = player.posZ + var20.zCoord * var18;
+                        var17.posZ = player.posZ + var20.z * var18;
 
                         var17.posX -= (double)(MathHelper.cos(player.rotationYaw / 180.0F * (float)Math.PI) * 0.35F);
                         var17.posY -= 0.500D;
@@ -102,9 +102,9 @@ public class PacketKeyEvent extends AbstractPacket
                         var17.accelerationY = motionY / 8D;
                         var17.accelerationZ = motionZ / 8D;
 
-                        player.worldObj.spawnEntityInWorld(var17);
+                        player.world.spawnEntity(var17);
 
-                        if (player.worldObj instanceof WorldServer)
+                        if (player.world instanceof WorldServer)
                         {
                             FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendToAllNearExcept(null, player.posX, player.posY, player.posZ, 512D, player.dimension, new SPacketAnimation(player, 0));
                         }
@@ -115,7 +115,7 @@ public class PacketKeyEvent extends AbstractPacket
 
                         player.addPotionEffect(new PotionEffect(TrailMix.potionEffect, effect.getDuration() - TrailMix.config.potFireballUse, effect.getAmplifier() + 1));
 
-                        EntityHelper.playSoundAtEntity(player, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 0.4F, 1.0F + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.2F);
+                        EntityHelper.playSoundAtEntity(player, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 0.4F, 1.0F + (player.world.rand.nextFloat() - player.world.rand.nextFloat()) * 0.2F);
                     }
                 }
                 break;
@@ -126,6 +126,5 @@ public class PacketKeyEvent extends AbstractPacket
                 break;
             }
         }
-        return null;
     }
 }

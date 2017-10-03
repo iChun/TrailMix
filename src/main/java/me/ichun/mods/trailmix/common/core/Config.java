@@ -7,6 +7,7 @@ import me.ichun.mods.ichunutil.common.core.config.annotations.IntBool;
 import me.ichun.mods.ichunutil.common.core.config.annotations.IntMinMax;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
+
 import java.io.File;
 
 public class Config extends ConfigBase

@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
@@ -43,7 +44,7 @@ public class PotionTrailMix extends Potion
         //		float f = TrailMix.potSpeed - living.getAIMoveSpeed();
         if(speed < ((float)TrailMix.config.potSpeed / 100F) + 0.5D)
         {
-            if(living.worldObj.isRemote && TrailMix.eventHandlerClient.fireballCooldown > 0 && living == Minecraft.getMinecraft().thePlayer)
+            if(living.world.isRemote && TrailMix.eventHandlerClient.fireballCooldown > 0 && living == Minecraft.getMinecraft().player)
             {
                 if(TrailMix.eventHandlerClient.fireballCooldown >= 9 || TrailMix.eventHandlerClient.fireballCooldown <= 2)
                 {
@@ -62,12 +63,12 @@ public class PotionTrailMix extends Potion
                     PotionEffect effect = living.getActivePotionEffect(TrailMix.potionEffect);
                     int duration = effect.getDuration();
 
-                    double speedMulti = 2D;
+                    double speedMulti = 1.5D;
                     speedMulti += (double)duration / 300D * 0.5D;
 
-                    if(speedMulti > 4D)
+                    if(speedMulti > 3D)
                     {
-                        speedMulti = 4D;
+                        speedMulti = 3D;
                     }
 
                     living.motionX *= speedMulti;
@@ -80,24 +81,24 @@ public class PotionTrailMix extends Potion
                     int k = (int)Math.floor(living.posZ - living.motionZ * 3);
                     BlockPos pos = new BlockPos(i, j, k);
 
-                    if(TrailMix.config.horseFireTrail == 1 && living.worldObj.isAirBlock(pos))
+                    if(TrailMix.config.horseFireTrail == 1 && living.world.isAirBlock(pos))
                     {
-                        living.worldObj.setBlockState(pos, Blocks.FIRE.getDefaultState());
+                        living.world.setBlockState(pos, Blocks.FIRE.getDefaultState());
                     }
 
-                    if(TrailMix.config.horseClearZone != 0 && (TrailMix.config.horseClearZone == 1 || living.worldObj.getGameRules().getBoolean("mobGriefing")))
+                    if(TrailMix.config.horseClearZone != 0 && (TrailMix.config.horseClearZone == 1 || living.world.getGameRules().getBoolean("mobGriefing")))
                     {
-                        EntityHorse horse = new EntityHorse(living.worldObj);
+                        EntityHorse horse = new EntityHorse(living.world);
                         horse.noClip = true;
                         for(int clr = 1; clr <=3; clr++)
                         {
                             horse.setLocationAndAngles(living.posX, living.posY, living.posZ, living.rotationYaw, living.rotationPitch);
-                            horse.moveEntity(living.motionX * (clr > 2 ? 2 : clr), living.motionY * (clr > 2 ? 2 : clr), living.motionZ * (clr > 2 ? 2 : clr));
-                            EntityHelper.destroyBlocksInAABB(living, horse.getEntityBoundingBox().expand(Math.sqrt(living.motionX * living.motionX), -0.5D, Math.sqrt(living.motionZ * living.motionZ)).addCoord(0.0D, 1.5D, 0.0D));
+                            horse.move(MoverType.SELF, living.motionX * (clr > 2 ? 2 : clr), living.motionY * (clr > 2 ? 2 : clr), living.motionZ * (clr > 2 ? 2 : clr));
+                            EntityHelper.destroyBlocksInAABB(living, horse.getEntityBoundingBox().grow(Math.sqrt(living.motionX * living.motionX), -0.5D, Math.sqrt(living.motionZ * living.motionZ)).expand(0.0D, 1.5D, 0.0D));
                         }
                     }
 
-                    if(living.worldObj.isRemote)
+                    if(living.world.isRemote)
                     {
                         for (int x = 0; x < 5; ++x)
                         {
@@ -114,7 +115,7 @@ public class PotionTrailMix extends Potion
 
         if(living instanceof EntityPig && !living.isChild())
         {
-            if(living.worldObj.isRemote && living.isEntityAlive())
+            if(living.world.isRemote && living.isEntityAlive())
             {
                 handleClient(living);
             }
@@ -138,7 +139,7 @@ public class PotionTrailMix extends Potion
         double var8 = living.motionZ;
         double var6 = living.motionY;
 
-        double var14 = (double)MathHelper.sqrt_double(var4 * var4 + var8 * var8);
+        double var14 = (double)MathHelper.sqrt(var4 * var4 + var8 * var8);
         float var12 = (float)(Math.atan2(var8, var4) * 180.0D / Math.PI) - 90.0F;
         float var13 = (float)(-(Math.atan2(var6, var14) * 180.0D / Math.PI));
 
@@ -147,7 +148,7 @@ public class PotionTrailMix extends Potion
         posY -= 0.1D ;
 
         living.rotationPitch = -EntityHelperTrailMix.updateRotation(living.rotationPitch, var13, 15F);
-        if(living == Minecraft.getMinecraft().thePlayer.getRidingEntity())
+        if(living == Minecraft.getMinecraft().player.getRidingEntity())
         {
             living.renderYawOffset = living.rotationYaw = (float)TrailMix.eventHandlerClient.pigInfo[0];
         }
@@ -197,7 +198,7 @@ public class PotionTrailMix extends Potion
                 spawnParticle(posX - mX, posY - mY - 0.625D, posZ - mZ, (EntityPig)living, 0x6633fd);
             }
 
-            if(TrailMix.eventHandlerClient.soundPlayed <= 10 && getRenderViewEntity() != null && living.getDistanceToEntity(getRenderViewEntity()) <= 20D)
+            if(TrailMix.eventHandlerClient.soundPlayed <= 10 && getRenderViewEntity() != null && living.getDistance(getRenderViewEntity()) <= 20D)
             {
                 int pos = (int)living.ticksExisted % 512;
 
@@ -234,13 +235,13 @@ public class PotionTrailMix extends Potion
     @SideOnly(Side.CLIENT)
     public void spawnParticle(double posX, double posY, double posZ, EntityLiving pig)
     {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTrailMixFX(Minecraft.getMinecraft().theWorld, posX, posY, posZ, getLiquidColor(), pig));
+        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTrailMixFX(Minecraft.getMinecraft().world, posX, posY, posZ, getLiquidColor(), pig));
     }
 
     @SideOnly(Side.CLIENT)
     public void spawnParticle(double posX, double posY, double posZ, EntityLiving pig, int clr)
     {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTrailMixFX(Minecraft.getMinecraft().theWorld, posX, posY, posZ, clr, pig, true));
+        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTrailMixFX(Minecraft.getMinecraft().world, posX, posY, posZ, clr, pig, true));
     }
 
     @SideOnly(Side.CLIENT)

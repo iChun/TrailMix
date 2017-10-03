@@ -1,15 +1,15 @@
 package me.ichun.mods.trailmix.common.packet;
 
-import me.ichun.mods.ichunutil.common.core.network.AbstractPacket;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import me.ichun.mods.ichunutil.common.core.network.AbstractPacket;
+import me.ichun.mods.trailmix.client.particle.ParticleTrailMixFX;
+import me.ichun.mods.trailmix.common.potion.PotionTrailMix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
-import me.ichun.mods.trailmix.client.particle.ParticleTrailMixFX;
-import me.ichun.mods.trailmix.common.potion.PotionTrailMix;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketSuckUpPig extends AbstractPacket
 {
@@ -35,10 +35,9 @@ public class PacketSuckUpPig extends AbstractPacket
     }
 
     @Override
-    public AbstractPacket execute(Side side, EntityPlayer player)
+    public void execute(Side side, EntityPlayer player)
     {
         handleClient();
-        return null;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class PacketSuckUpPig extends AbstractPacket
     @SideOnly(Side.CLIENT)
     public void handleClient()
     {
-        Entity ent = Minecraft.getMinecraft().theWorld.getEntityByID(entId);
+        Entity ent = Minecraft.getMinecraft().world.getEntityByID(entId);
         if(ent != null && ent instanceof EntityPig)
         {
             EntityPig pig = (EntityPig)ent;
@@ -61,7 +60,7 @@ public class PacketSuckUpPig extends AbstractPacket
                 double var4 = pig.getRNG().nextGaussian() * 0.04D;
                 double var6 = pig.getRNG().nextGaussian() * 0.04D;
                 double var8 = 10.0D;
-                Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTrailMixFX(pig.worldObj, pig.posX + (double)(pig.getRNG().nextFloat() * pig.width * 2.0F) - (double)pig.width - var2 * var8, pig.posY + (double)(pig.getRNG().nextFloat() * pig.height) - var4 * var8, pig.posZ + (double)(pig.getRNG().nextFloat() * pig.width * 2.0F) - (double)pig.width - var6 * var8, var2, var4, var6, PotionTrailMix.getRandEffectColour(pig.getRNG())));
+                Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTrailMixFX(pig.world, pig.posX + (double)(pig.getRNG().nextFloat() * pig.width * 2.0F) - (double)pig.width - var2 * var8, pig.posY + (double)(pig.getRNG().nextFloat() * pig.height) - var4 * var8, pig.posZ + (double)(pig.getRNG().nextFloat() * pig.width * 2.0F) - (double)pig.width - var6 * var8, var2, var4, var6, PotionTrailMix.getRandEffectColour(pig.getRNG())));
             }
         }
     }

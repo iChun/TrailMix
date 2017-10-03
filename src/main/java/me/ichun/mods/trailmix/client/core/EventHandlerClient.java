@@ -5,19 +5,20 @@ import me.ichun.mods.ichunutil.client.keybind.KeyEvent;
 import me.ichun.mods.ichunutil.client.model.item.ModelBaseWrapper;
 import me.ichun.mods.ichunutil.common.iChunUtil;
 import me.ichun.mods.ichunutil.common.item.ItemHandler;
+import me.ichun.mods.trailmix.client.render.ItemRenderLauncher;
 import me.ichun.mods.trailmix.client.render.RenderPigPot;
+import me.ichun.mods.trailmix.common.TrailMix;
 import me.ichun.mods.trailmix.common.item.ItemLauncher;
+import me.ichun.mods.trailmix.common.packet.PacketKeyEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderPig;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerSaddle;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityPig;
@@ -26,13 +27,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
-import me.ichun.mods.trailmix.client.render.ItemRenderLauncher;
-import me.ichun.mods.trailmix.common.TrailMix;
-import me.ichun.mods.trailmix.common.packet.PacketKeyEvent;
 
 import java.util.ArrayList;
 
@@ -81,14 +80,14 @@ public class EventHandlerClient
         Minecraft mc = Minecraft.getMinecraft();
         if(mc.currentScreen == null && !iChunUtil.eventHandlerClient.hasScreen)
         {
-            if(event.keyBind.equals(TrailMix.config.fireballKey) && mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND) == null)
+            if(event.keyBind.equals(TrailMix.config.fireballKey) && mc.player.getHeldItem(EnumHand.MAIN_HAND) == null)
             {
                 TrailMix.eventHandlerClient.sendKeybind(0, true);
             }
 
-            if(mc.thePlayer.getRidingEntity() instanceof EntityPig)
+            if(mc.player.getRidingEntity() instanceof EntityPig)
             {
-                EntityPig pig = (EntityPig)mc.thePlayer.getRidingEntity();
+                EntityPig pig = (EntityPig)mc.player.getRidingEntity();
                 if(pig.isPotionActive(TrailMix.potionEffect) && pig.getActivePotionEffect(TrailMix.potionEffect).getDuration() > 0)
                 {
                     if(event.keyBind.isPressed())
@@ -156,7 +155,7 @@ public class EventHandlerClient
                 }
             }
 
-            ItemStack currentInv = ItemHandler.getUsableDualHandedItem(mc.thePlayer);
+            ItemStack currentInv = ItemHandler.getUsableDualHandedItem(mc.player);
             if(currentInv != null && currentInv.getItem() instanceof ItemLauncher)
             {
                 if(event.keyBind.isMinecraftBind())
@@ -188,7 +187,7 @@ public class EventHandlerClient
     public void onWorldTick(TickEvent.ClientTickEvent event)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        if(event.phase == TickEvent.Phase.END && mc.theWorld != null)
+        if(event.phase == TickEvent.Phase.END && mc.world != null)
         {
             prevOverlayAlpha = overlayAlpha;
             soundPlayed = 0;
@@ -203,7 +202,7 @@ public class EventHandlerClient
                 {
                     for(int i = nyanList.size() - 1; i >= 0; i--)
                     {
-                        Entity ent = mc.theWorld.getEntityByID(nyanList.get(i));
+                        Entity ent = mc.world.getEntityByID(nyanList.get(i));
                         if(!(ent instanceof EntityPig))
                         {
                             nyanList.remove(i);
@@ -212,7 +211,7 @@ public class EventHandlerClient
                 }
             }
 
-            if(mc.thePlayer.isPotionActive(TrailMix.potionEffect))
+            if(mc.player.isPotionActive(TrailMix.potionEffect))
             {
                 if(overlayAlpha < 20)
                 {
@@ -220,7 +219,7 @@ public class EventHandlerClient
                 }
                 else
                 {
-                    overlayAlpha = 20 + (int)(mc.thePlayer.ticksExisted % 80 >= 40 ? 80 - mc.thePlayer.ticksExisted % 80 : mc.thePlayer.ticksExisted % 80);
+                    overlayAlpha = 20 + (int)(mc.player.ticksExisted % 80 >= 40 ? 80 - mc.player.ticksExisted % 80 : mc.player.ticksExisted % 80);
                     if(overlayAlpha - 1 > prevOverlayAlpha)
                     {
                         overlayAlpha = prevOverlayAlpha + 1;
@@ -240,16 +239,16 @@ public class EventHandlerClient
                 fireballCooldown--;
             }
 
-            if(mc.thePlayer.getRidingEntity() != null && mc.thePlayer.getRidingEntity() instanceof EntityPig)
+            if(mc.player.getRidingEntity() != null && mc.player.getRidingEntity() instanceof EntityPig)
             {
-                EntityPig pig = (EntityPig)mc.thePlayer.getRidingEntity();
+                EntityPig pig = (EntityPig)mc.player.getRidingEntity();
                 if(pig.isPotionActive(TrailMix.potionEffect) && pig.getActivePotionEffect(TrailMix.potionEffect).getDuration() > 0)
                 {
                     double mX = (double)(-MathHelper.sin((float)pigInfo[0] / 180.0F * (float)Math.PI) * MathHelper.cos((float)pigInfo[1] / 180.0F * (float)Math.PI));
                     double mZ = (double)(MathHelper.cos((float)pigInfo[0] / 180.0F * (float)Math.PI) * MathHelper.cos((float)pigInfo[1] / 180.0F * (float)Math.PI));
                     double mY = (double)(-MathHelper.sin((float)pigInfo[1] / 180.0F * (float)Math.PI));
 
-                    float mag = MathHelper.sqrt_double(mX * mX + mY * mY + mZ * mZ);
+                    float mag = MathHelper.sqrt(mX * mX + mY * mY + mZ * mZ);
                     mX /= mag;
                     mY /= mag;
                     mZ /= mag;
@@ -268,15 +267,15 @@ public class EventHandlerClient
     public void onRenderTick(TickEvent.RenderTickEvent event)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        if(mc.theWorld != null)
+        if(mc.world != null)
         {
             if(event.phase == TickEvent.Phase.END)
             {
                 if(!(mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)))
                 {
-                    if(TrailMix.config.showFlightTimer == 1 && mc.thePlayer.getRidingEntity() != null && mc.thePlayer.getRidingEntity() instanceof EntityPig)
+                    if(TrailMix.config.showFlightTimer == 1 && mc.player.getRidingEntity() != null && mc.player.getRidingEntity() instanceof EntityPig)
                     {
-                        EntityPig pig = (EntityPig)mc.thePlayer.getRidingEntity();
+                        EntityPig pig = (EntityPig)mc.player.getRidingEntity();
                         if(pig.isPotionActive(TrailMix.potionEffect))
                         {
                             ScaledResolution sr = new ScaledResolution(mc);
@@ -328,10 +327,10 @@ public class EventHandlerClient
                                     clr = 0xff0000;
                                 }
                             }
-                            mc.fontRendererObj.drawStringWithShadow(sb.toString(), 10, sr.getScaledHeight() - 25, clr); // width height colour
+                            mc.fontRenderer.drawStringWithShadow(sb.toString(), 10, sr.getScaledHeight() - 25, clr); // width height colour
                         }
                     }
-                    if(mc.thePlayer.isPotionActive(TrailMix.potionEffect) || overlayAlpha > 0)
+                    if(mc.player.isPotionActive(TrailMix.potionEffect) || overlayAlpha > 0)
                     {
                         ScaledResolution scaledresolution = new ScaledResolution(mc);
                         int width = scaledresolution.getScaledWidth();
@@ -361,12 +360,12 @@ public class EventHandlerClient
                         GlStateManager.disableAlpha();
                         Minecraft.getMinecraft().getTextureManager().bindTexture(texGlow);
                         Tessellator tessellator = Tessellator.getInstance();
-                        VertexBuffer vertexBuffer = tessellator.getBuffer();
-                        vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-                        vertexBuffer.pos(0, height, -90.0D).tex(0.0D, 1.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
-                        vertexBuffer.pos(width, height, -90.0D).tex(1.0D, 1.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
-                        vertexBuffer.pos(width, 0, -90.0D).tex(1.0D, 0.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
-                        vertexBuffer.pos(0, 0, -90.0D).tex(0.0D, 0.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
+                        BufferBuilder bufferbuilder = tessellator.getBuffer();
+                        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                        bufferbuilder.pos(0, height, -90.0D).tex(0.0D, 1.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
+                        bufferbuilder.pos(width, height, -90.0D).tex(1.0D, 1.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
+                        bufferbuilder.pos(width, 0, -90.0D).tex(1.0D, 0.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
+                        bufferbuilder.pos(0, 0, -90.0D).tex(0.0D, 0.0D).color((int)(ff10 * ff19 * 255.0F), (int)(ff13 * ff19 * 255.0F), (int)(ff16 * ff19 * 255.0F), (int)(overlay * 255F)).endVertex();
                         tessellator.draw();
                         GlStateManager.depthMask(true);
                         GlStateManager.enableDepth();
@@ -378,6 +377,14 @@ public class EventHandlerClient
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onModelRegistry(ModelRegistryEvent event)
+    {
+        ModelLoader.setCustomModelResourceLocation(TrailMix.itemTrailMix, 0, new ModelResourceLocation("trailmix:trailmix", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(TrailMix.itemLauncherTMPP, 0, new ModelResourceLocation("trailmix:trailmix.tmpp_launcher", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(TrailMix.itemLauncherNyanPig, 0, new ModelResourceLocation("trailmix:trailmix.nyan_pig_launcher", "inventory"));
     }
 
     public void sendKeybind(int i, boolean pressed)

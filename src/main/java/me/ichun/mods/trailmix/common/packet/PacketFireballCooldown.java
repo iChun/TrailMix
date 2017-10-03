@@ -27,9 +27,8 @@ public class PacketFireballCooldown extends AbstractPacket
     }
 
     @Override
-    public AbstractPacket execute(Side side, EntityPlayer player)
+    public void execute(Side side, EntityPlayer player)
     {
         TrailMix.eventHandlerClient.fireballCooldown = 10;
-        return null;
     }
 }

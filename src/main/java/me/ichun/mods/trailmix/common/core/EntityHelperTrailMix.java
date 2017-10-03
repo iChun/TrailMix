@@ -36,7 +36,7 @@ public class EntityHelperTrailMix extends EntityHelper
 
                 boolean hasTrailMix = living instanceof EntityZombie || living instanceof EntityPlayer && (((EntityPlayer)living).capabilities.isCreativeMode || consumeInventoryItem(((EntityPlayer)living).inventory, TrailMix.itemTrailMix));
 
-                EntityPig pig = new EntityPig(living.worldObj);
+                EntityPig pig = new EntityPig(living.world);
 
                 pig.setLocationAndAngles(living.posX, living.posY + (double)living.getEyeHeight(), living.posZ, living.rotationYaw, living.rotationPitch);
                 pig.posY -= 0.45D;
@@ -63,14 +63,14 @@ public class EntityHelperTrailMix extends EntityHelper
                 pig.motionY = (double)(-MathHelper.sin(pig.rotationPitch / 180.0F * (float)Math.PI));
 
                 float par7 = 0.85F;
-                float var9 = MathHelper.sqrt_double(pig.motionX * pig.motionX + pig.motionZ * pig.motionZ + pig.motionY * pig.motionY);
+                float var9 = MathHelper.sqrt(pig.motionX * pig.motionX + pig.motionZ * pig.motionZ + pig.motionY * pig.motionY);
                 pig.motionX /= (double)var9;
                 pig.motionY /= (double)var9;
                 pig.motionZ /= (double)var9;
                 pig.motionX *= (double)par7;
                 pig.motionY *= (double)par7;
                 pig.motionZ *= (double)par7;
-                float var10 = MathHelper.sqrt_double(pig.motionX * pig.motionX + pig.motionZ * pig.motionZ);
+                float var10 = MathHelper.sqrt(pig.motionX * pig.motionX + pig.motionZ * pig.motionZ);
 
                 pig.renderYawOffset = pig.prevRotationYaw = pig.rotationYaw = living.rotationYaw;
                 pig.prevRotationPitch = pig.rotationPitch = (float)(Math.atan2(pig.motionY, (double)var10) * 180.0D / Math.PI);
@@ -86,9 +86,9 @@ public class EntityHelperTrailMix extends EntityHelper
                     pigStats[6] = 0.7D;
                 }
 
-                living.worldObj.spawnEntityInWorld(pig);
+                living.world.spawnEntity(pig);
 
-                EntityHelper.playSoundAtEntity(pig, SoundEvents.ENTITY_PIG_AMBIENT, pig.getSoundCategory(), 0.4F, 1.0F + (living.worldObj.rand.nextFloat() - living.worldObj.rand.nextFloat()) * 0.2F);
+                EntityHelper.playSoundAtEntity(pig, SoundEvents.ENTITY_PIG_AMBIENT, pig.getSoundCategory(), 0.4F, 1.0F + (living.world.rand.nextFloat() - living.world.rand.nextFloat()) * 0.2F);
 
                 EntityHelper.playSoundAtEntity(living, SoundEvents.BLOCK_PISTON_EXTEND, living.getSoundCategory(), 0.2F, 1F);
 

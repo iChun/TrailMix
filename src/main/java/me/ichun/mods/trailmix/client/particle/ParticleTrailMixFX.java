@@ -3,7 +3,7 @@ package me.ichun.mods.trailmix.client.particle;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +22,7 @@ public class ParticleTrailMixFX extends Particle
         double mZ = (double)(MathHelper.cos(pig.renderYawOffset / 180.0F * (float)Math.PI) * MathHelper.cos(0.0F/*pig.rotationPitch*/ / 180.0F * (float)Math.PI));
         double mY = (double)(-MathHelper.sin(0.0F/*pig.rotationPitch*/ / 180.0F * (float)Math.PI));
 
-        float mag = MathHelper.sqrt_double(mX * mX + mY * mY + mZ * mZ);
+        float mag = MathHelper.sqrt(mX * mX + mY * mY + mZ * mZ);
 
         mX /= mag;
         mY /= mag;
@@ -94,7 +94,7 @@ public class ParticleTrailMixFX extends Particle
     }
 
     @Override
-    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float f, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float f, float f1, float f2, float f3, float f4, float f5)
     {
         float f6 = (float)(txIndex % 16) / 16F;
         float f7 = f6 + 0.0624375F;
@@ -139,7 +139,7 @@ public class ParticleTrailMixFX extends Particle
         prevPosY = posY;
         prevPosZ = posZ;
         //		motionY -= particleGravity;
-        moveEntity(motionX, motionY, motionZ);
+        move(motionX, motionY, motionZ);
         motionX *= 0.98000001907348633D;
         motionY *= 0.98000001907348633D;
         motionZ *= 0.98000001907348633D;
@@ -147,7 +147,7 @@ public class ParticleTrailMixFX extends Particle
         {
             setExpired();
         }
-        if(isCollided) //onGround
+        if(onGround) //onGround
         {
             if(Math.random() < 0.5D)
             {
@@ -156,10 +156,10 @@ public class ParticleTrailMixFX extends Particle
             motionX *= 0.69999998807907104D;
             motionZ *= 0.69999998807907104D;
         }
-        Material material = worldObj.getBlockState(new BlockPos(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ))).getMaterial();
+        Material material = world.getBlockState(new BlockPos(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ))).getMaterial();
         if(material.isLiquid())
         {
-            double d = (float)(MathHelper.floor_double(posY) + 1) - BlockLiquid.getLiquidHeightPercent((Integer)worldObj.getBlockState(new BlockPos(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ))).getValue(BlockLiquid.LEVEL));
+            double d = (float)(MathHelper.floor(posY) + 1) - BlockLiquid.getLiquidHeightPercent((Integer)world.getBlockState(new BlockPos(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ))).getValue(BlockLiquid.LEVEL));
             if(posY < d)
             {
                 setExpired();

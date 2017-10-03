@@ -1,14 +1,14 @@
 package me.ichun.mods.trailmix.common.packet;
 
-import me.ichun.mods.ichunutil.common.core.network.AbstractPacket;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import me.ichun.mods.ichunutil.common.core.network.AbstractPacket;
+import me.ichun.mods.trailmix.common.TrailMix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
-import me.ichun.mods.trailmix.common.TrailMix;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketClearPigPotion extends AbstractPacket
 {
@@ -34,10 +34,9 @@ public class PacketClearPigPotion extends AbstractPacket
     }
 
     @Override
-    public AbstractPacket execute(Side side, EntityPlayer player)
+    public void execute(Side side, EntityPlayer player)
     {
         handleClient();
-        return null;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class PacketClearPigPotion extends AbstractPacket
     @SideOnly(Side.CLIENT)
     public void handleClient()
     {
-        Entity ent = Minecraft.getMinecraft().theWorld.getEntityByID(entId);
+        Entity ent = Minecraft.getMinecraft().world.getEntityByID(entId);
         if(ent != null && ent instanceof EntityPig)
         {
             EntityPig pig = (EntityPig)ent;

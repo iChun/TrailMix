@@ -40,10 +40,9 @@ public class PacketSpawnParticles extends AbstractPacket
     }
 
     @Override
-    public AbstractPacket execute(Side side, EntityPlayer player)
+    public void execute(Side side, EntityPlayer player)
     {
         handleClient();
-        return null;
     }
 
     @Override
@@ -56,14 +55,14 @@ public class PacketSpawnParticles extends AbstractPacket
     public void handleClient()
     {
         Minecraft mc = Minecraft.getMinecraft();
-        Entity ent = mc.theWorld.getEntityByID(entId);
+        Entity ent = mc.world.getEntityByID(entId);
         if(ent != null)
         {
             mc.renderGlobal.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, ent.posX, (ent.getEntityBoundingBox().minY + ent.getEntityBoundingBox().maxY) / 2D, ent.posZ, 0.0D, 0.0D, 0.0D);
 
             ResourceLocation texture;
             int clr = 0xffffff;
-            if(mc.theWorld.rand.nextFloat() <= 0.05F)
+            if(mc.world.rand.nextFloat() <= 0.05F)
             {
                 if(ent instanceof EntityChicken)
                 {
@@ -119,7 +118,7 @@ public class PacketSpawnParticles extends AbstractPacket
                 texture = texTx[txIndex];
 
                 //0xd30000;// 344eca // ec4314 // 099a43// 87099a // 9a8e09 // 09359a // 6f9a09
-                int x = Minecraft.getMinecraft().theWorld.rand.nextInt(8);
+                int x = Minecraft.getMinecraft().world.rand.nextInt(8);
                 switch(x)
                 {
                     case 0: clr = 0xd30000; break;
@@ -133,7 +132,7 @@ public class PacketSpawnParticles extends AbstractPacket
                 }
             }
 
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleAttackFX(ent.worldObj, ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ, clr, texture));
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleAttackFX(ent.world, ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ, clr, texture));
         }
     }
 

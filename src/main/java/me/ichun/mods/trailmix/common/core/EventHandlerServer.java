@@ -6,18 +6,22 @@ import me.ichun.mods.trailmix.common.TrailMix;
 import me.ichun.mods.trailmix.common.item.ItemLauncher;
 import me.ichun.mods.trailmix.common.item.ItemTrailMix;
 import me.ichun.mods.trailmix.common.packet.*;
+import me.ichun.mods.trailmix.common.potion.PotionTrailMix;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucketMilk;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketAnimation;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,6 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -51,16 +56,16 @@ public class EventHandlerServer
     {
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
-            if(event.getSource() instanceof EntityDamageSource && !(event.getSource() instanceof EntityDamageSourceIndirect) && event.getSource().getEntity() instanceof EntityPlayer)
+            if(event.getSource() instanceof EntityDamageSource && !(event.getSource() instanceof EntityDamageSourceIndirect) && event.getSource().getImmediateSource() instanceof EntityPlayer)
             {
-                EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
+                EntityPlayer player = (EntityPlayer)event.getSource().getImmediateSource();
                 if(player.isPotionActive(TrailMix.potionEffect))
                 {
                     event.setAmount(event.getAmount() * 4);
                     knockbackSet.add(event.getEntityLiving());
                 }
             }
-            else if((event.getSource() == DamageSource.inFire || event.getSource() == DamageSource.onFire) && event.getEntityLiving() instanceof EntityHorse && ((EntityHorse)event.getEntityLiving()).isPotionActive(TrailMix.potionEffect))
+            else if((event.getSource() == DamageSource.IN_FIRE || event.getSource() == DamageSource.ON_FIRE) && event.getEntityLiving() instanceof EntityHorse && event.getEntityLiving().isPotionActive(TrailMix.potionEffect))
             {
                 event.getEntityLiving().extinguish();
                 event.setCanceled(true);
@@ -71,7 +76,7 @@ public class EventHandlerServer
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event)
     {
-        if(!event.getEntityLiving().worldObj.isRemote && event.getEntityLiving() instanceof EntityZombie)
+        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityZombie)
         {
             EntityZombie zombie = (EntityZombie)event.getEntityLiving();
             boolean currentItemIsLauncher = zombie.getHeldItem(EnumHand.MAIN_HAND) != null && zombie.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemLauncher;
@@ -120,10 +125,10 @@ public class EventHandlerServer
                 {
                     if (!event.getEntityPlayer().capabilities.isCreativeMode)
                     {
-                        is.stackSize--;
+                        is.shrink(1);
                     }
 
-                    if (!pig.worldObj.isRemote)
+                    if (!pig.world.isRemote)
                     {
                         pig.curePotionEffects(is);
 
@@ -131,16 +136,16 @@ public class EventHandlerServer
                         FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendToAllNearExcept(null, event.getEntityPlayer().posX, event.getEntityPlayer().posY, event.getEntityPlayer().posZ, 512D, event.getEntityPlayer().dimension, new SPacketAnimation(event.getEntityPlayer(), 0));
                     }
 
-                    if(is.stackSize <= 0)
+                    if(is.getCount() <= 0)
                     {
-                        event.getEntityPlayer().inventory.mainInventory[event.getEntityPlayer().inventory.currentItem] = new ItemStack(Items.BUCKET);
+                        event.getEntityPlayer().inventory.mainInventory.set(event.getEntityPlayer().inventory.currentItem, new ItemStack(Items.BUCKET));
                         event.getEntityPlayer().inventory.markDirty();
                     }
                     event.setCanceled(true);
                 }
                 if(is.getItem() instanceof ItemTrailMix)
                 {
-                    if (event.getEntityPlayer().worldObj instanceof WorldServer)
+                    if (event.getEntityPlayer().world instanceof WorldServer)
                     {
                         FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendToAllNearExcept(null, event.getEntityPlayer().posX, event.getEntityPlayer().posY, event.getEntityPlayer().posZ, 512D, event.getEntityPlayer().dimension, new SPacketAnimation(event.getEntityPlayer(), 0));
                     }
@@ -152,7 +157,7 @@ public class EventHandlerServer
                     }
                     else if((event.getTarget() instanceof EntityPig && ((EntityPig)pig).getSaddled() || event.getTarget() instanceof EntityHorse) && !pig.isBeingRidden())
                     {
-                        pig.processInitialInteract(event.getEntityPlayer(), is, EnumHand.MAIN_HAND);
+                        pig.processInitialInteract(event.getEntityPlayer(), EnumHand.MAIN_HAND);
                         event.setCanceled(true);
                     }
                 }
@@ -189,7 +194,7 @@ public class EventHandlerServer
             while(piggies.hasNext())
             {
                 Map.Entry<EntityPig, double[]> e = piggies.next();
-                if(!e.getKey().isPotionActive(TrailMix.potionEffect) || !e.getKey().isCollided && !e.getKey().isEntityAlive())
+                if(!e.getKey().isPotionActive(TrailMix.potionEffect) || !e.getKey().collided && !e.getKey().isEntityAlive())
                 {
                     if(!e.getKey().onGround)
                     {
@@ -219,7 +224,7 @@ public class EventHandlerServer
                     {
                         if(info[4] >= info[5])
                         {
-                            Random rand = pig.worldObj.rand;
+                            Random rand = pig.world.rand;
                             //time to switch gains!!
                             info[4] = 0D;
                             info[5] = Math.ceil(rand.nextDouble() * 100D);
@@ -233,17 +238,17 @@ public class EventHandlerServer
                         {
                             Vec3d var17 = new Vec3d(pig.posX, pig.posY, pig.posZ);
                             Vec3d var3 = new Vec3d(pig.posX + pig.motionX, pig.posY + pig.motionY, pig.posZ + pig.motionZ);
-                            RayTraceResult var4 = pig.worldObj.rayTraceBlocks(var17, var3, false, true, false);
+                            RayTraceResult var4 = pig.world.rayTraceBlocks(var17, var3, false, true, false);
                             var17 = new Vec3d(pig.posX, pig.posY, pig.posZ);
                             var3 = new Vec3d(pig.posX + pig.motionX, pig.posY + pig.motionY, pig.posZ + pig.motionZ);
 
                             if(var4 != null)
                             {
-                                var3 = new Vec3d(var4.hitVec.xCoord, var4.hitVec.yCoord, var4.hitVec.zCoord);
+                                var3 = new Vec3d(var4.hitVec.x, var4.hitVec.y, var4.hitVec.z);
                             }
 
                             Entity var5 = null;
-                            List var6 = pig.worldObj.getEntitiesWithinAABBExcludingEntity(pig, pig.getEntityBoundingBox().addCoord(pig.motionX, pig.motionY, pig.motionZ).expand(1.0D, 1.0D, 1.0D));
+                            List var6 = pig.world.getEntitiesWithinAABBExcludingEntity(pig, pig.getEntityBoundingBox().expand(pig.motionX, pig.motionY, pig.motionZ).grow(1.0D));
                             double var7 = 0.0D;
                             int var9;
                             float var11;
@@ -262,7 +267,7 @@ public class EventHandlerServer
                                     if(var10.canBeCollidedWith())
                                     {
                                         var11 = 0.3F;
-                                        AxisAlignedBB var12 = var10.getEntityBoundingBox().expand((double)var11, (double)var11, (double)var11);
+                                        AxisAlignedBB var12 = var10.getEntityBoundingBox().grow((double)var11);
                                         RayTraceResult var13 = var12.calculateIntercept(var17, var3);
 
                                         if(var13 != null)
@@ -289,7 +294,7 @@ public class EventHandlerServer
 
                             if(var4 != null && var4.entityHit != null && var4.entityHit instanceof EntityZombie)
                             {
-                                if(pig.worldObj.rand.nextFloat() < 0.5F)
+                                if(pig.world.rand.nextFloat() < 0.5F)
                                 {
                                     var4.entityHit.startRiding(pig);
                                 }
@@ -437,7 +442,7 @@ public class EventHandlerServer
                         }
                     }
 
-                    if(pig.isCollided && (!pig.onGround || pig.onGround && pig.motionY < -0.3D || !e.getKey().isEntityAlive()))
+                    if(pig.collided && (!pig.onGround || pig.onGround && pig.motionY < -0.3D || !e.getKey().isEntityAlive()))
                     {
                         if(info[7] > 0.8D)
                         {
@@ -446,7 +451,7 @@ public class EventHandlerServer
                             {
                                 boom = 7F;
                             }
-                            pig.worldObj.createExplosion(pig, pig.posX, pig.posY, pig.posZ, boom, TrailMix.config.pigExplosion != 0 && (TrailMix.config.pigExplosion == 1 || pig.worldObj.getGameRules().getBoolean("mobGriefing")));
+                            pig.world.createExplosion(pig, pig.posX, pig.posY, pig.posZ, boom, TrailMix.config.pigExplosion != 0 && (TrailMix.config.pigExplosion == 1 || pig.world.getGameRules().getBoolean("mobGriefing")));
                             pig.setDead();
                             pigsKeys.remove(e.getKey());
                             piggies.remove();
@@ -504,7 +509,7 @@ public class EventHandlerServer
                             info[1] = 0.0D;
                         }
 
-                        float mag = MathHelper.sqrt_double(mX * mX + mY * mY + mZ * mZ);
+                        float mag = MathHelper.sqrt(mX * mX + mY * mY + mZ * mZ);
                         mX /= mag;
                         mY /= mag;
                         mZ /= mag;
@@ -583,7 +588,7 @@ public class EventHandlerServer
                     RayTraceResult mop = EntityHelperTrailMix.getEntityLook(event.player, 5D);
                     if(mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPig && !((EntityPig)mop.entityHit).isChild() && !((EntityPig)mop.entityHit).isPotionActive(TrailMix.potionEffect))
                     {
-                        double dist = event.player.getDistanceToEntity(mop.entityHit);
+                        double dist = event.player.getDistance(mop.entityHit);
                         if(dist <= 1.8D)
                         {
                             EntityPig pig = (EntityPig)mop.entityHit;
@@ -594,7 +599,7 @@ public class EventHandlerServer
                                 pig.dropItem(Items.SADDLE, 1);
                             }
 
-                            EntityHelper.playSoundAtEntity(pig, SoundEvents.ENTITY_PIG_DEATH, pig.getSoundCategory(), 0.3F, 1.0F + (event.player.worldObj.rand.nextFloat() - event.player.worldObj.rand.nextFloat()) * 0.2F);
+                            EntityHelper.playSoundAtEntity(pig, SoundEvents.ENTITY_PIG_DEATH, pig.getSoundCategory(), 0.3F, 1.0F + (event.player.world.rand.nextFloat() - event.player.world.rand.nextFloat()) * 0.2F);
 
                             EntityHelper.playSoundAtEntity(event.player, SoundEvents.BLOCK_PISTON_CONTRACT, event.player.getSoundCategory(), 0.2F, 1.0F);
 
@@ -632,6 +637,24 @@ public class EventHandlerServer
         }
     }
 
+    @SubscribeEvent
+    public void onRegisterItem(RegistryEvent.Register<Item> event)
+    {
+        TrailMix.itemTrailMix = (ItemFood)(new ItemTrailMix(2, 0.3F, false)).setAlwaysEdible().setPotionEffect(new PotionEffect(TrailMix.potionEffect, TrailMix.config.potDuration / 10, 0), 1.0F).setRegistryName(new ResourceLocation("trailmix", "trailmix")).setUnlocalizedName("trailmix.trailmix").setCreativeTab(CreativeTabs.FOOD);
+        TrailMix.itemLauncherTMPP = (new ItemLauncher()).setFull3D().setRegistryName(new ResourceLocation("trailmix", "tmpp_launcher")).setUnlocalizedName("trailmix.tmpp_launcher").setCreativeTab(CreativeTabs.TOOLS);
+        TrailMix.itemLauncherNyanPig = (new ItemLauncher()).setFull3D().setRegistryName(new ResourceLocation("trailmix", "nyan_pig_launcher")).setUnlocalizedName("trailmix.nyan_pig_launcher").setCreativeTab(CreativeTabs.TOOLS);
+        event.getRegistry().register(TrailMix.itemTrailMix);
+        event.getRegistry().register(TrailMix.itemLauncherTMPP);
+        event.getRegistry().register(TrailMix.itemLauncherNyanPig);
+    }
+
+    @SubscribeEvent
+    public void onRegisterPotion(RegistryEvent.Register<Potion> event)
+    {
+        TrailMix.potionEffect = new PotionTrailMix().setRegistryName("trailmix", "trailmix").setPotionName("potion.trailmix").setBeneficial();
+        event.getRegistry().register(TrailMix.potionEffect);
+    }
+
     public void setVelocity(Entity ent, double mX, double mY, double mZ)
     {
         ent.motionX = mX;
@@ -662,7 +685,7 @@ public class EventHandlerServer
         {
             if(key == 11)
             {
-                ((WorldServer)player.worldObj).addScheduledTask(() -> EntityHelperTrailMix.launchPig(player));
+                ((WorldServer)player.world).addScheduledTask(() -> EntityHelperTrailMix.launchPig(player));
             }
             else if(key == 12)
             {

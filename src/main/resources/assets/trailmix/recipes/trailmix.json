@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+      {
+        "item": "minecraft:sugar"
+      },
+      {
+        "item": "minecraft:gunpowder"
+      },
+      {
+        "item": "minecraft:redstone"
+      },
+      {
+        "item": "minecraft:glowstone_dust"
+      }
+  ],
+  "result": {
+    "item": "trailmix:trailmix",
+	"count": 4
+  }
+}
+ 

@@ -5,15 +5,12 @@ import me.ichun.mods.trailmix.common.core.EntityHelperTrailMix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPig;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class RenderPigPot extends RenderPig
@@ -23,7 +20,7 @@ public class RenderPigPot extends RenderPig
 
     public RenderPigPot(RenderPig render)
     {
-        super(render.getRenderManager(), render.getMainModel(), render.shadowSize);
+        super(render.getRenderManager());
     }
 
     @Override
@@ -43,14 +40,14 @@ public class RenderPigPot extends RenderPig
                 double var4 = pig.motionX;
                 double var8 = pig.motionZ;
                 double var6 = pig.motionY;
-                if(pig == Minecraft.getMinecraft().thePlayer.getRidingEntity())
+                if(pig == Minecraft.getMinecraft().player.getRidingEntity())
                 {
                     var4 = (double)(-MathHelper.sin((float)TrailMix.eventHandlerClient.pigInfo[0] / 180.0F * (float)Math.PI) * MathHelper.cos((float)TrailMix.eventHandlerClient.pigInfo[1] / 180.0F * (float)Math.PI));
                     var8 = (double)(MathHelper.cos((float)TrailMix.eventHandlerClient.pigInfo[0] / 180.0F * (float)Math.PI) * MathHelper.cos((float)TrailMix.eventHandlerClient.pigInfo[1] / 180.0F * (float)Math.PI));
                     var6 = (double)(-MathHelper.sin((float)TrailMix.eventHandlerClient.pigInfo[1] / 180.0F * (float)Math.PI));
                 }
 
-                double var14 = (double)MathHelper.sqrt_double(var4 * var4 + var8 * var8);
+                double var14 = (double)MathHelper.sqrt(var4 * var4 + var8 * var8);
                 float var13 = (float)(-(Math.atan2(var6, var14) * 180.0D / Math.PI));
 
                 GlStateManager.rotate(-EntityHelperTrailMix.updateRotation(0.0F, var13, 180F), -MathHelper.cos(pig.renderYawOffset / 180.0F * (float)Math.PI), 0.0F, -MathHelper.sin(pig.renderYawOffset / 180.0F * (float)Math.PI));
@@ -69,8 +66,8 @@ public class RenderPigPot extends RenderPig
     {
         if(TrailMix.eventHandlerClient.nyanList.contains(pig.getEntityId()))
         {
-            pig.worldObj.rand.setSeed(pig.getEntityId());
-            if(pig.worldObj.rand.nextFloat() < 0.1F)
+            pig.world.rand.setSeed(pig.getEntityId());
+            if(pig.world.rand.nextFloat() < 0.1F)
             {
                 return texNyan1;
             }

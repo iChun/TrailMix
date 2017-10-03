@@ -2,6 +2,7 @@ package me.ichun.mods.trailmix.client.render;
 
 import me.ichun.mods.ichunutil.client.model.item.IModelBase;
 import me.ichun.mods.ichunutil.common.core.util.ResourceHelper;
+import me.ichun.mods.trailmix.client.model.ModelLauncher;
 import me.ichun.mods.trailmix.common.TrailMix;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -18,7 +19,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.util.vector.Vector3f;
-import me.ichun.mods.trailmix.client.model.ModelLauncher;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;

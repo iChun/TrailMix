@@ -2,7 +2,6 @@ package me.ichun.mods.trailmix.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
 public class ModelLauncher extends ModelBase
 {

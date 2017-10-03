@@ -5,7 +5,10 @@ import me.ichun.mods.ichunutil.common.core.network.PacketChannel;
 import me.ichun.mods.ichunutil.common.iChunUtil;
 import me.ichun.mods.ichunutil.common.module.update.UpdateChecker;
 import me.ichun.mods.trailmix.client.core.EventHandlerClient;
+import me.ichun.mods.trailmix.common.behaviour.BehaviorDispenseLauncher;
+import me.ichun.mods.trailmix.common.core.Config;
 import me.ichun.mods.trailmix.common.core.EventHandlerServer;
+import me.ichun.mods.trailmix.common.core.ProxyCommon;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -17,21 +20,19 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import me.ichun.mods.trailmix.common.behaviour.BehaviorDispenseLauncher;
-import me.ichun.mods.trailmix.common.core.ProxyCommon;
-import me.ichun.mods.trailmix.common.core.Config;
 
 @Mod(modid = TrailMix.MOD_ID, name=TrailMix.MOD_NAME,
         version = TrailMix.VERSION,
         guiFactory = "me.ichun.mods.ichunutil.common.core.config.GenericModGuiFactory",
-        dependencies = "required-after:ichunutil@[" + iChunUtil.VERSION_MAJOR +".2.0," + (iChunUtil.VERSION_MAJOR + 1) + ".0.0)",
-        acceptableRemoteVersions = "[" + iChunUtil.VERSION_MAJOR +".0.0," + iChunUtil.VERSION_MAJOR + ".1.0)"
+        dependencies = "required-after:ichunutil@[" + iChunUtil.VERSION_MAJOR +".0.1," + (iChunUtil.VERSION_MAJOR + 1) + ".0.0)",
+        acceptableRemoteVersions = "[" + iChunUtil.VERSION_MAJOR +".0.0," + iChunUtil.VERSION_MAJOR + ".1.0)",
+        acceptedMinecraftVersions = iChunUtil.MC_VERSION_RANGE
 )
 public class TrailMix
 {
     public static final String MOD_NAME = "TrailMix";
     public static final String MOD_ID = "trailmix";
-    public static final String VERSION = iChunUtil.VERSION_MAJOR + ".0.1";
+    public static final String VERSION = iChunUtil.VERSION_MAJOR + ".0.0";
 
     @Instance(TrailMix.MOD_ID)
     public static TrailMix instance;

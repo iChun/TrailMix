@@ -43,10 +43,9 @@ public class PacketPigInfo extends AbstractPacket
     }
 
     @Override
-    public AbstractPacket execute(Side side, EntityPlayer player)
+    public void execute(Side side, EntityPlayer player)
     {
         handleClient();
-        return null;
     }
 
     @Override

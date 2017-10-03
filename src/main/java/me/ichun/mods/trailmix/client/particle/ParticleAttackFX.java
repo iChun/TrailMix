@@ -4,9 +4,9 @@ import me.ichun.mods.ichunutil.common.core.util.ResourceHelper;
 import me.ichun.mods.trailmix.common.TrailMix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 
 public class ParticleAttackFX extends Particle
 {
-
     public ParticleAttackFX(World world, double d, double d1, double d2, int clr, ResourceLocation tx)
     {
         super(world, d, d1, d2, 0.0D, 0.0D, 0.0D);
@@ -35,7 +34,7 @@ public class ParticleAttackFX extends Particle
     }
 
     @Override
-    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float f, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float f, float f1, float f2, float f3, float f4, float f5)
     {
         Tessellator tessellator = Tessellator.getInstance();
         Minecraft.getMinecraft().getTextureManager().bindTexture(texFx[fxIndex - 1]);
