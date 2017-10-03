@@ -156,7 +156,7 @@ public class EventHandlerClient
             }
 
             ItemStack currentInv = ItemHandler.getUsableDualHandedItem(mc.player);
-            if(currentInv != null && currentInv.getItem() instanceof ItemLauncher)
+            if(!currentInv.isEmpty() && currentInv.getItem() instanceof ItemLauncher)
             {
                 if(event.keyBind.isMinecraftBind())
                 {

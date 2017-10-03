@@ -111,7 +111,7 @@ public class EventHandlerServer
     public void onInteract(PlayerInteractEvent.EntityInteract event)
     {
         ItemStack is1 = ItemHandler.getUsableDualHandedItem(event.getEntityPlayer());
-        if(is1 != null && is1.getItem() instanceof ItemLauncher)
+        if(is1.getItem() instanceof ItemLauncher)
         {
             event.setCanceled(true);
         }
@@ -119,8 +119,6 @@ public class EventHandlerServer
         {
             EntityLiving pig = (EntityLiving)event.getTarget();
             ItemStack is = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
-            if(is != null)
-            {
                 if(is.getItem() instanceof ItemBucketMilk && pig.isPotionActive(TrailMix.potionEffect))
                 {
                     if (!event.getEntityPlayer().capabilities.isCreativeMode)
@@ -143,7 +141,7 @@ public class EventHandlerServer
                     }
                     event.setCanceled(true);
                 }
-                if(is.getItem() instanceof ItemTrailMix)
+                else if(is.getItem() instanceof ItemTrailMix)
                 {
                     if (event.getEntityPlayer().world instanceof WorldServer)
                     {
@@ -161,7 +159,6 @@ public class EventHandlerServer
                         event.setCanceled(true);
                     }
                 }
-            }
         }
     }
 
@@ -169,7 +166,7 @@ public class EventHandlerServer
     public void onBlockBreak(BlockEvent.BreakEvent event)
     {
         ItemStack is = ItemHandler.getUsableDualHandedItem(event.getPlayer());
-        if(is != null && (is.getItem() == TrailMix.itemLauncherTMPP || is.getItem() == TrailMix.itemLauncherNyanPig))
+        if(is.getItem() == TrailMix.itemLauncherTMPP || is.getItem() == TrailMix.itemLauncherNyanPig)
         {
             event.setCanceled(true);
         }
@@ -179,7 +176,7 @@ public class EventHandlerServer
     public void onClickBlock(PlayerInteractEvent.LeftClickBlock event)
     {
         ItemStack is = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
-        if(is != null && (is.getItem() == TrailMix.itemLauncherTMPP || is.getItem() == TrailMix.itemLauncherNyanPig))
+        if(is.getItem() == TrailMix.itemLauncherTMPP || is.getItem() == TrailMix.itemLauncherNyanPig)
         {
             event.setCanceled(true);
         }
@@ -582,7 +579,7 @@ public class EventHandlerServer
             if(holdingKey.contains(event.player))
             {
                 ItemStack is = ItemHandler.getUsableDualHandedItem(event.player);
-                boolean currentItemIsLauncher = is != null && is.getItem() instanceof ItemLauncher;
+                boolean currentItemIsLauncher = is.getItem() instanceof ItemLauncher;
                 if(currentItemIsLauncher && is.getItemDamage() > 1)
                 {
                     RayTraceResult mop = EntityHelperTrailMix.getEntityLook(event.player, 5D);

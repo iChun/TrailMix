@@ -20,7 +20,7 @@ public class EntityHelperTrailMix extends EntityHelper
     public static void launchPig(EntityLivingBase living)
     {
         ItemStack is = ItemHandler.getUsableDualHandedItem(living);
-        if(is != null && is.getItem() instanceof ItemLauncher)
+        if(is.getItem() instanceof ItemLauncher)
         {
             if(is.getItemDamage() < 9)
             {

@@ -28,7 +28,7 @@ public class ItemRenderLauncher implements IModelBase
 {
     private ModelLauncher launcherModel;
     private ModelPig pigRend;
-    private ItemStack currentStack;
+    private ItemStack currentStack = ItemStack.EMPTY;
 
     private static final ResourceLocation texNormal = new ResourceLocation("trailmix", "textures/model/skin_normal.png");
     private static final ResourceLocation texNyan = new ResourceLocation("trailmix", "textures/model/skin_nyan.png");
