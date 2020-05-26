@@ -1,9 +1,12 @@
 package me.ichun.mods.trailmix.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelLauncher extends ModelBase
+public class ModelLauncher extends Model
 {
 	//fields
 	public ModelRenderer blockintake1;
@@ -35,9 +38,13 @@ public class ModelLauncher extends ModelBase
 	public ModelRenderer backleft;
 	public ModelRenderer baselauncher;
 	public ModelRenderer scopeR;
+	
+	public boolean isLeft;
 
 	public ModelLauncher()
 	{
+		super(RenderType::getEntityCutout);
+		
 		textureWidth = 256;
 		textureHeight = 256;
 
@@ -217,43 +224,44 @@ public class ModelLauncher extends ModelBase
 		setRotation(scopeR, 0F, 0F, 0F);
 	}
 
-	public void render(float f5, boolean isFirstPerson)
+	@Override
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
 	{
-		blockintake1.render(f5);
-		blockintake2.render(f5);
-		blockintake3.render(f5);
-		blockintake4.render(f5);
-		handle.render(f5);
-		barrel9.render(f5);
-		barrel10.render(f5);
-		barrel11.render(f5);
-		barrel12.render(f5);
-		barrel13.render(f5);
-		barrel14.render(f5);
-		barrel15.render(f5);
-		barrel16.render(f5);
-		barrel1.render(f5);
-		barrel8.render(f5);
-		barrel7.render(f5);
-		barrel2.render(f5);
-		barrel3.render(f5);
-		barrel6.render(f5);
-		barrel4.render(f5);
-		barrel5.render(f5);
-		if(isFirstPerson)
+		blockintake1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		blockintake2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		blockintake3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		blockintake4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		handle.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel9.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel10.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel11.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel12.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel13.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel14.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel15.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel16.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel8.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel7.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel6.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		barrel5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		if(!isLeft)
 		{
-			scopeL.render(f5);
+			scopeL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		}
 		else
 		{
-			scopeR.render(f5);
+			scopeR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		}
-		backright.render(f5);
-		backmiddle.render(f5);
-		backbottom.render(f5);
-		backtop.render(f5);
-		backleft.render(f5);
-		baselauncher.render(f5);
+		backright.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		backmiddle.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		backbottom.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		backtop.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		backleft.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		baselauncher.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)

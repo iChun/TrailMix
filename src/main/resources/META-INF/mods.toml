@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[31,)" #forge version dep
+issueTrackerURL="https://github.com/iChun/TrailMix/issues"
+
+[[mods]]
+    modId="trailmix"
+    version="${file.jarVersion}" #mandatory
+    displayName="Trail Mix"
+    displayURL="https://ichun.me/mods/trail-mix/"
+    authors="iChun"
+    description='''
+    This mod adds a single food item, called trail mix. A great snack for any party!
+    '''
+
+[[dependencies.trailmix]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.trailmix]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2,1.16)"
+    ordering="NONE"
+    side="BOTH"

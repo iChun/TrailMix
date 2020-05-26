@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LID",
+    "IGI",
+    "OIP"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:pink_dye"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "item": "trailmix:tmpp_launcher",
+    "nbt": "{Damage:9}"
+  }
+}
+ 

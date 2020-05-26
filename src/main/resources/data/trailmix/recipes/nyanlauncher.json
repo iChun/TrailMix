@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABC",
+    "DLG",
+    "XYZ"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:red_dye"
+    },
+    "B": {
+      "item": "minecraft:orange_dye"
+    },
+    "C": {
+      "item": "minecraft:yellow_dye"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "L": {
+      "item": "trailmix:tmpp_launcher",
+      "nbt": "{Damage:9}"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "X": {
+      "item": "minecraft:purple_dye"
+    },
+    "Y": {
+      "item": "minecraft:light_blue_dye"
+    },
+    "Z": {
+      "item": "minecraft:lime_dye"
+    }
+  },
+  "result": {
+    "item": "trailmix:nyan_pig_launcher",
+    "nbt": "{Damage:9}"
+  }
+}
+ 
