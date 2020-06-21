@@ -5,7 +5,7 @@ import me.ichun.mods.ichunutil.common.network.PacketChannel;
 import me.ichun.mods.trailmix.client.core.EventHandlerClient;
 import me.ichun.mods.trailmix.client.render.ItemRenderLauncher;
 import me.ichun.mods.trailmix.client.render.PigRendererOverride;
-import me.ichun.mods.trailmix.common.config.ConfigClient;
+import me.ichun.mods.trailmix.client.config.ConfigClient;
 import me.ichun.mods.trailmix.common.config.ConfigCommon;
 import me.ichun.mods.trailmix.common.config.ConfigServer;
 import me.ichun.mods.trailmix.common.core.EventHandlerServer;

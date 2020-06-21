@@ -1,4 +1,4 @@
-package me.ichun.mods.trailmix.common.config;
+package me.ichun.mods.trailmix.client.config;
 
 import me.ichun.mods.ichunutil.common.config.ConfigBase;
 import me.ichun.mods.ichunutil.common.config.annotations.CategoryDivider;
