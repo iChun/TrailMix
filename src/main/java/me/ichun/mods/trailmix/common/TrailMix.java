@@ -114,14 +114,14 @@ public class TrailMix
 
     public static class Effects
     {
-        private static final DeferredRegister<Effect> REGISTRY = new DeferredRegister<>(ForgeRegistries.POTIONS, MOD_ID);
+        private static final DeferredRegister<Effect> REGISTRY = DeferredRegister.create(ForgeRegistries.POTIONS, MOD_ID);
 
         public static final RegistryObject<EffectTrailMix> TRAIL_MIX = REGISTRY.register("trailmix", EffectTrailMix::new);
     }
 
     public static class Items
     {
-        private static final DeferredRegister<Item> REGISTRY = new DeferredRegister<>(ForgeRegistries.ITEMS, MOD_ID);
+        private static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
         public static final RegistryObject<ItemTrailMix> TRAIL_MIX = REGISTRY.register("trailmix", () -> new ItemTrailMix(new Item.Properties().group(ItemGroup.FOOD).food(new Food.Builder().hunger(1).saturation(0.1F).fastToEat().setAlwaysEdible().effect(() -> new EffectInstance(Effects.TRAIL_MIX.get(), configCommon.potDuration, 0), 1.0F).build())));
         public static final RegistryObject<ItemLauncher> LAUNCHER_TMPP = REGISTRY.register("tmpp_launcher", () -> new ItemLauncher(new Item.Properties().maxDamage(9).group(ItemGroup.TOOLS)));
@@ -130,7 +130,7 @@ public class TrailMix
 
     public static class Particles
     {
-        private static final DeferredRegister<ParticleType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
+        private static final DeferredRegister<ParticleType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
 
         public static final RegistryObject<BasicParticleType> ATTACK = REGISTRY.register("attack", () -> new BasicParticleType(true));
     }
