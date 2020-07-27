@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -50,9 +49,9 @@ public class AttackParticle extends TexturedParticle
     public ResourceLocation texture;
     public ResourceLocation textureFx;
     public int clr = 0xffffff;
-    public AttackParticle(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn)
+    public AttackParticle(ClientWorld world, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn)
     {
-        super(worldIn, xCoordIn, yCoordIn, zCoordIn, 0, 0, 0);
+        super(world, xCoordIn, yCoordIn, zCoordIn, 0, 0, 0);
         //what part of ZERO do you not understand, MC?
         this.motionX = 0D;
         this.motionY = 0D;
@@ -62,7 +61,6 @@ public class AttackParticle extends TexturedParticle
         particleScale = 1.2F;
         setMaxAge(20);
 
-        ClientWorld world = Minecraft.getInstance().world;
         if(world != null)
         {
             ent = world.getEntityByID((int)xSpeedIn);
@@ -209,7 +207,7 @@ public class AttackParticle extends TexturedParticle
     {
         public Factory() {}
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             AttackParticle flameparticle = new AttackParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             return flameparticle;
         }

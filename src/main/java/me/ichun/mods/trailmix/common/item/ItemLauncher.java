@@ -19,7 +19,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -82,7 +82,7 @@ public class ItemLauncher extends Item
     @Override
     public ITextComponent getDisplayName(ItemStack stack)
     {
-        return new TranslationTextComponent(this.getTranslationKey(stack)).setStyle(new Style().setColor(stack.getItem() == TrailMix.Items.LAUNCHER_TMPP.get() ? TextFormatting.RED : TextFormatting.LIGHT_PURPLE));
+        return (new TranslationTextComponent(this.getTranslationKey(stack))).mergeStyle(stack.getItem() == TrailMix.Items.LAUNCHER_TMPP.get() ? TextFormatting.RED : TextFormatting.LIGHT_PURPLE);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class ItemLauncher extends Item
             }
             double amp = 0.5D;
             pig.setMotion(living.getLookVec().mul(amp, amp, amp));
-            Vec3d motion = pig.getMotion();
+            Vector3d motion = pig.getMotion();
             pig.setLocationAndAngles(pX + motion.x, pY + motion.y, pZ + motion.z, living.rotationYaw, living.rotationPitch);
 
             EntityHelper.playSound(living, SoundEvents.BLOCK_PISTON_EXTEND, living.getSoundCategory(), EntityHelper.getSoundVolume(living), EntityHelper.getSoundPitch(living));

@@ -8,14 +8,15 @@ import me.ichun.mods.trailmix.client.model.ModelLauncher;
 import me.ichun.mods.trailmix.common.TrailMix;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.PigModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
 @SuppressWarnings("deprecation")
@@ -50,7 +51,7 @@ public class ItemRenderLauncher extends ItemStackTileEntityRenderer
     }
 
     @Override
-    public void render(ItemStack is, MatrixStack stack, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    public void func_239207_a_(ItemStack is, ItemCameraTransforms.TransformType transformType, MatrixStack stack, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
         setToOrigin(stack);
         launcherModel.render(stack, bufferIn.getBuffer(RenderType.getEntityCutout(is.getItem() == TrailMix.Items.LAUNCHER_TMPP.get() ? TEX_NORMAL : TEX_NYAN)), combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
@@ -131,5 +132,5 @@ public class ItemRenderLauncher extends ItemStackTileEntityRenderer
     }
 
     @Override
-    public void handleItemState(ItemStack stack, World world, LivingEntity entity) {}
+    public void handleItemState(ItemStack stack, ClientWorld world, LivingEntity entity) {}
 }

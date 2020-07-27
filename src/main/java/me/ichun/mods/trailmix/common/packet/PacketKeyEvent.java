@@ -13,7 +13,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketKeyEvent extends AbstractPacket
@@ -82,7 +82,7 @@ public class PacketKeyEvent extends AbstractPacket
                     {
                         if(player.getHeldItem(Hand.MAIN_HAND).isEmpty() || player.getHeldItem(Hand.OFF_HAND).isEmpty())
                         {
-                            Vec3d look = player.getLookVec();
+                            Vector3d look = player.getLookVec();
                             FireballEntity fireball = new FireballEntity(player.world, player, look.x, look.y, look.z);
 
                             double pX, pZ;

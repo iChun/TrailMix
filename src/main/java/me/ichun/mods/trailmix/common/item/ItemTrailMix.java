@@ -19,7 +19,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -33,7 +32,7 @@ public class ItemTrailMix extends Item
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack is, PlayerEntity player, LivingEntity living, Hand hand)
+    public ActionResultType itemInteractionForEntity(ItemStack is, PlayerEntity player, LivingEntity living, Hand hand)
     {
         if(living instanceof PigEntity || living instanceof HorseEntity)
         {
@@ -57,12 +56,12 @@ public class ItemTrailMix extends Item
                 living.playSound(SoundEvents.ENTITY_PLAYER_BURP, EntityHelper.getSoundVolume(living), EntityHelper.getSoundPitch(living));
 
                 //New potion effects aren't synched
-                ServerLifecycleHooks.getCurrentServer().getPlayerList().sendToAllNearExcept(null, living.getPosX(), living.getPosY(), living.getPosZ(), 265D, living.dimension, new SPlayEntityEffectPacket(living.getEntityId(), trailEffect));
+                ServerLifecycleHooks.getCurrentServer().getPlayerList().sendToAllNearExcept(null, living.getPosX(), living.getPosY(), living.getPosZ(), 265D, living.world.func_234923_W_(), new SPlayEntityEffectPacket(living.getEntityId(), trailEffect));
             }
             is.shrink(1);
-            return true;
+            return ActionResultType.func_233537_a_(player.world.isRemote);
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override
@@ -71,10 +70,14 @@ public class ItemTrailMix extends Item
         if(result.getType() == RayTraceResult.Type.ENTITY)
         {
             Entity ent = ((EntityRayTraceResult)result).getEntity();
-            if(ent.isPassenger(playerIn) && (ent instanceof PigEntity || ent instanceof HorseEntity) && itemInteractionForEntity(playerIn.getHeldItem(handIn), playerIn, (LivingEntity)ent, handIn))
+            if(ent.isPassenger(playerIn) && (ent instanceof PigEntity || ent instanceof HorseEntity))
             {
-                ent.rotationYaw = playerIn.rotationYaw;
-                return new ActionResult<>(ActionResultType.SUCCESS, playerIn.getHeldItem(handIn));
+                ActionResultType type = itemInteractionForEntity(playerIn.getHeldItem(handIn), playerIn, (LivingEntity)ent, handIn);
+                if(type.isSuccessOrConsume())
+                {
+                    ent.rotationYaw = playerIn.rotationYaw;
+                    return new ActionResult<>(type, playerIn.getHeldItem(handIn));
+                }
             }
         }
 
@@ -84,6 +87,6 @@ public class ItemTrailMix extends Item
     @Override
     public ITextComponent getDisplayName(ItemStack stack)
     {
-        return new TranslationTextComponent(this.getTranslationKey(stack)).setStyle(new Style().setColor(TextFormatting.YELLOW));
+        return new TranslationTextComponent(this.getTranslationKey(stack)).mergeStyle(TextFormatting.YELLOW);
     }
 }

@@ -6,10 +6,7 @@ import me.ichun.mods.trailmix.common.TrailMix;
 import me.ichun.mods.trailmix.common.behaviour.DispenseLauncherBehavior;
 import me.ichun.mods.trailmix.common.item.ItemLauncher;
 import me.ichun.mods.trailmix.common.packet.PacketSpawnPoof;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.FireBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -28,6 +25,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
@@ -322,16 +320,16 @@ public class EventHandlerServer
             {
                 horse.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 40));
             }
-            if(horse.onGround)
+            if(horse.isOnGround())
             {
-                Vec3d motion = new Vec3d(horse.getPosX() - prevPosX, horse.getPosY() - prevPosY, horse.getPosZ() - prevPosZ);
+                Vector3d motion = new Vector3d(horse.getPosX() - prevPosX, horse.getPosY() - prevPosY, horse.getPosZ() - prevPosZ);
                 double speed = Entity.horizontalMag(motion);
                 if(speed > 0.75D)
                 {
                     if(TrailMix.configCommon.horseFireTrail)
                     {
-                        Vec3d pos = horse.getPositionVec();
-                        Vec3d look = EntityHelper.getVectorRenderYawOffset(horse.renderYawOffset);
+                        Vector3d pos = horse.getPositionVec();
+                        Vector3d look = EntityHelper.getVectorRenderYawOffset(horse.renderYawOffset);
 
                         BlockPos blockPos = new BlockPos(pos);
                         while(horse.getBoundingBox().intersects(new AxisAlignedBB(blockPos)))
@@ -340,7 +338,7 @@ public class EventHandlerServer
                             blockPos = new BlockPos(pos);
                         }
 
-                        if(FlintAndSteelItem.canSetFire(horse.world.getBlockState(blockPos), horse.world, blockPos))
+                        if(AbstractFireBlock.canLightBlock(horse.world, blockPos))
                         {
                             BlockState blockstate1 = ((FireBlock)Blocks.FIRE).getStateForPlacement(horse.world, blockPos);
                             horse.world.setBlockState(blockPos, blockstate1, 11);
@@ -391,16 +389,16 @@ public class EventHandlerServer
 
         public void tick()
         {
-            Vec3d heading = EntityHelper.getVectorForRotation(pitch, yaw);
-            double mulAmp = pig.onGround ? motionAmp : motionAmp * 0.8F;
-            Vec3d headingAmp = heading.mul(mulAmp, mulAmp, mulAmp);
+            Vector3d heading = EntityHelper.getVectorForRotation(pitch, yaw);
+            double mulAmp = pig.isOnGround() ? motionAmp : motionAmp * 0.8F;
+            Vector3d headingAmp = heading.mul(mulAmp, mulAmp, mulAmp);
             pig.setMotion(pig.getMotion().add(headingAmp));
 
-            Vec3d motion = pig.getMotion();
+            Vector3d motion = pig.getMotion();
             List<Entity> passengers = pig.getPassengers();
             if(passengers.isEmpty())
             {
-                Vec3d pigPos = pig.getPositionVec().add(0D, pig.getHeight() * 0.5D, 0D);
+                Vector3d pigPos = pig.getPositionVec().add(0D, pig.getHeight() * 0.5D, 0D);
                 RayTraceResult result = EntityHelper.rayTrace(pig.world, pigPos, pigPos.add(motion), pig, true, RayTraceContext.BlockMode.COLLIDER, b -> true, RayTraceContext.FluidMode.NONE, e -> {
                     if(e instanceof ZombieEntity)
                     {
@@ -422,7 +420,7 @@ public class EventHandlerServer
                     motionAmp = 0.13D;
                     pitch = -12F;
                 }
-                if(pig.onGround && pitch > -12F)
+                if(pig.isOnGround() && pitch > -12F)
                 {
                     pitch = -12F;
                 }
@@ -477,10 +475,10 @@ public class EventHandlerServer
 
             pig.rotationYaw = pig.rotationYaw + (yaw - pig.rotationYaw) * 0.2F;
 
-            Vec3d pos = new Vec3d(pig.getPosX() - prevPosX, pig.getPosY() - prevPosY, pig.getPosZ() - prevPosZ);
-            Vec3d vec3d = pig.getAllowedMovement(pos);
+            Vector3d pos = new Vector3d(pig.getPosX() - prevPosX, pig.getPosY() - prevPosY, pig.getPosZ() - prevPosZ);
+            Vector3d vec3d = pig.getAllowedMovement(pos);
 
-            Vec3d difference = pig.onGround ? new Vec3d(pos.x - vec3d.x, 0, pos.z - vec3d.z) : pos.subtract(vec3d);
+            Vector3d difference = pig.isOnGround() ? new Vector3d(pos.x - vec3d.x, 0, pos.z - vec3d.z) : pos.subtract(vec3d);
             pig.fallDistance = (float)pos.y * 7F;
             if(Math.sqrt(difference.dotProduct(difference)) > 0.6D && pig.ticksExisted > 5)
             {

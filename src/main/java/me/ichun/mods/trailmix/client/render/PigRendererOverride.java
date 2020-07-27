@@ -3,14 +3,14 @@ package me.ichun.mods.trailmix.client.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import me.ichun.mods.trailmix.common.TrailMix;
 import me.ichun.mods.trailmix.common.effect.EffectTrailMix;
-import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.PigRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 
 public class PigRendererOverride extends PigRenderer
 {
@@ -48,7 +48,7 @@ public class PigRendererOverride extends PigRenderer
     {
         if(!(!pig.isAlive() || pig.getActivePotionEffect(TrailMix.Effects.TRAIL_MIX.get()) == null || pig.getActivePotionEffect(TrailMix.Effects.TRAIL_MIX.get()).duration <= 0))
         {
-            Vec3d vec3d = new Vec3d(pig.getPosX() - MathHelper.lerp(partialTicks, pig.prevPosX, pig.getPosX()), pig.getPosY() - MathHelper.lerp(partialTicks, pig.prevPosY, pig.getPosY()), pig.getPosZ() - MathHelper.lerp(partialTicks, pig.prevPosZ, pig.getPosZ())).normalize();
+            Vector3d vec3d = new Vector3d(pig.getPosX() - MathHelper.lerp(partialTicks, pig.prevPosX, pig.getPosX()), pig.getPosY() - MathHelper.lerp(partialTicks, pig.prevPosY, pig.getPosY()), pig.getPosZ() - MathHelper.lerp(partialTicks, pig.prevPosZ, pig.getPosZ())).normalize();
             float f = MathHelper.sqrt(Entity.horizontalMag(vec3d));
             float yaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
             float pitch = (float)(MathHelper.atan2(vec3d.y, f) * (double)(180F / (float)Math.PI));
@@ -57,7 +57,7 @@ public class PigRendererOverride extends PigRenderer
 
             super.applyRotations(pig, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
 
-            if(!pig.onGround)
+            if(!pig.isOnGround())
             {
                 matrixStackIn.rotate(Vector3f.XP.rotationDegrees(pitch));
             }

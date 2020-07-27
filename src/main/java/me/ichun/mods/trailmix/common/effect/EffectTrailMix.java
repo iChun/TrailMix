@@ -6,16 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TexturedParticle;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierManager;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,7 +32,7 @@ public class EffectTrailMix extends Effect
     public EffectTrailMix()
     {
         super(EffectType.BENEFICIAL, 0xc87b00);
-        addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "0B7509F0-8923-4D88-86C5-04B29E23F4EF", TrailMix.configCommon.potSpeed, AttributeModifier.Operation.MULTIPLY_TOTAL); //ichun-ichttt UUID
+        addAttributesModifier(Attributes.MOVEMENT_SPEED, "0B7509F0-8923-4D88-86C5-04B29E23F4EF", TrailMix.configCommon.potSpeed, AttributeModifier.Operation.MULTIPLY_TOTAL); //ichun-ichttt UUID
     }
 
     public static int getRandomEffectColor()
@@ -127,7 +127,7 @@ public class EffectTrailMix extends Effect
     @OnlyIn(Dist.CLIENT)
     public void spawnParticle(LivingEntity living, double yPos, int color)
     {
-        Vec3d look = EntityHelper.getVectorRenderYawOffset(living.renderYawOffset).mul(-1D, -1D, -1D);
+        Vector3d look = EntityHelper.getVectorRenderYawOffset(living.renderYawOffset).mul(-1D, -1D, -1D);
         double amp = 0.4D;
         Particle particle = Minecraft.getInstance().particles.addParticle(ParticleTypes.POOF, living.getPosX() + look.x * living.getWidth() * 0.475D, yPos, living.getPosZ() + look.z * living.getWidth() * 0.475D, look.x * amp, look.y * amp, look.z * amp);
         if(particle instanceof TexturedParticle)
@@ -141,7 +141,7 @@ public class EffectTrailMix extends Effect
     }
 
     @Override
-    public void applyAttributesModifiersToEntity(LivingEntity living, AbstractAttributeMap attributeMapIn, int amplifier) {
+    public void applyAttributesModifiersToEntity(LivingEntity living, AttributeModifierManager attributeMapIn, int amplifier) {
         if(!(living instanceof PigEntity))
         {
             super.applyAttributesModifiersToEntity(living, attributeMapIn, living instanceof HorseEntity ? amplifier + 2 : amplifier);
