@@ -43,7 +43,7 @@ public class SuctionSound extends TickableSound
             this.volume = MathHelper.clamp((10F - (this.time - this.stoppingTime)) / 10F, 0.0F, 1.0F) * 0.5F;
             if(this.time > this.stoppingTime + 10)
             {
-                this.func_239509_o_();
+                this.finishPlaying();
             }
         }
     }

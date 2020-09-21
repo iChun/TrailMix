@@ -23,6 +23,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -164,7 +165,7 @@ public class EventHandlerServer
     {
         if(!event.getEntityLiving().world.isRemote)
         {
-            if(event.getAttacker() instanceof LivingEntity && ((LivingEntity)event.getAttacker()).getActivePotionEffect(TrailMix.Effects.TRAIL_MIX.get()) != null)
+            if(event.getEntityLiving().getRevengeTarget() != null && event.getEntityLiving().getRevengeTarget().getActivePotionEffect(TrailMix.Effects.TRAIL_MIX.get()) != null)
             {
                 event.setStrength(event.getStrength() * (float)TrailMix.configCommon.knockbackMultiplier);
                 ((ServerWorld)event.getEntityLiving().world).spawnParticle(ParticleTypes.EXPLOSION, event.getEntityLiving().getPosX(), (event.getEntityLiving().getBoundingBox().minY + event.getEntityLiving().getBoundingBox().maxY) / 2D, event.getEntityLiving().getPosZ(), 0, event.getEntityLiving().getEntityId(), 0D, 0D, 0);
@@ -338,7 +339,7 @@ public class EventHandlerServer
                             blockPos = new BlockPos(pos);
                         }
 
-                        if(AbstractFireBlock.canLightBlock(horse.world, blockPos))
+                        if(AbstractFireBlock.canLightBlock(horse.world, blockPos, Direction.DOWN))
                         {
                             BlockState blockstate1 = ((FireBlock)Blocks.FIRE).getStateForPlacement(horse.world, blockPos);
                             horse.world.setBlockState(blockPos, blockstate1, 11);

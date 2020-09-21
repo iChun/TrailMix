@@ -56,7 +56,7 @@ public class ItemTrailMix extends Item
                 living.playSound(SoundEvents.ENTITY_PLAYER_BURP, EntityHelper.getSoundVolume(living), EntityHelper.getSoundPitch(living));
 
                 //New potion effects aren't synched
-                ServerLifecycleHooks.getCurrentServer().getPlayerList().sendToAllNearExcept(null, living.getPosX(), living.getPosY(), living.getPosZ(), 265D, living.world.func_234923_W_(), new SPlayEntityEffectPacket(living.getEntityId(), trailEffect));
+                ServerLifecycleHooks.getCurrentServer().getPlayerList().sendToAllNearExcept(null, living.getPosX(), living.getPosY(), living.getPosZ(), 265D, living.world.getDimensionKey(), new SPlayEntityEffectPacket(living.getEntityId(), trailEffect));
             }
             is.shrink(1);
             return ActionResultType.func_233537_a_(player.world.isRemote);
