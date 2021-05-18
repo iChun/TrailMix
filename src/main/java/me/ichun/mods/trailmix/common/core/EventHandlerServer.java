@@ -250,8 +250,10 @@ public class EventHandlerServer
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event)
     {
-        DispenserBlock.registerDispenseBehavior(TrailMix.Items.LAUNCHER_TMPP.get(), new DispenseLauncherBehavior(event.getServer()));
-        DispenserBlock.registerDispenseBehavior(TrailMix.Items.LAUNCHER_NYAN.get(), new DispenseLauncherBehavior(event.getServer()));
+        event.getServer().execute(() -> {
+            DispenserBlock.registerDispenseBehavior(TrailMix.Items.LAUNCHER_TMPP.get(), new DispenseLauncherBehavior(event.getServer()));
+            DispenserBlock.registerDispenseBehavior(TrailMix.Items.LAUNCHER_NYAN.get(), new DispenseLauncherBehavior(event.getServer()));
+        });
     }
 
     @SubscribeEvent
