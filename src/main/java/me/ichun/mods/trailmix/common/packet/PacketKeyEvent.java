@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -86,7 +87,7 @@ public class PacketKeyEvent extends AbstractPacket
                             FireballEntity fireball = new FireballEntity(player.world, player, look.x, look.y, look.z);
 
                             double pX, pZ;
-                            switch(player.getHeldItem(Hand.MAIN_HAND).isEmpty() ? player.getPrimaryHand() : player.getPrimaryHand().opposite())
+                            switch(player.getHeldItem(Hand.MAIN_HAND).isEmpty() ? player.getPrimaryHand() : (player.getPrimaryHand() == HandSide.RIGHT ? HandSide.LEFT : HandSide.RIGHT))
                             {
                                 case RIGHT:
                                 {
